@@ -1,0 +1,88 @@
+{{ define "main" }}
+<main class="main" id="main">
+  <article class="post-single">
+
+    <!-- Author header -->
+    <header class="post-header">
+      {{/* build socials from simple fields */}}
+      {{- $icons := slice -}}
+      {{- with (or .Params.x .Params.twitter) -}}
+        {{- $h := replaceRE "^@+" "" (printf "%v" .) -}}
+        {{- $u := cond (hasPrefix $h "http") $h (printf "https://x.com/%s" $h) -}}
+        {{- $icons = $icons | append (dict "name" "x" "url" $u "title" "X") -}}
+      {{- end -}}
+      {{- with .Params.linkedin -}}
+        {{- $l := printf "%v" . -}}
+        {{- $u := cond (hasPrefix $l "http") $l (cond (or (hasPrefix $l "in/") (hasPrefix $l "company/")) (printf "https://www.linkedin.com/%s" $l) (printf "https://www.linkedin.com/in/%s" $l)) -}}
+        {{- $icons = $icons | append (dict "name" "linkedin" "url" $u) -}}
+      {{- end -}}
+      {{- with .Params.github -}}
+        {{- $g := replaceRE "^@+" "" (printf "%v" .) -}}
+        {{- $u := cond (hasPrefix $g "http") $g (printf "https://github.com/%s" $g) -}}
+        {{- $icons = $icons | append (dict "name" "github" "url" $u) -}}
+      {{- end -}}
+      {{- with (or .Params.website .Params.site .Params.url) -}}
+        {{- $w := printf "%v" . -}}
+        {{- $u := cond (hasPrefix $w "http") $w (printf "https://%s" $w) -}}
+        {{- $icons = $icons | append (dict "name" "website" "url" $u "title" "Website") -}}
+      {{- end -}}
+      {{- with .Params.email -}}
+        {{- $u := cond (hasPrefix . "mailto:") . (printf "mailto:%s" .) -}}
+        {{- $icons = $icons | append (dict "name" "email" "url" $u "title" "Email") -}}
+      {{- end -}}
+
+      <div style="display:flex;gap:1rem;align-items:center;">
+        {{ $avatar := or .Params.avatar .Params.image }}
+        {{ if $avatar }}
+          <img src="{{ $avatar }}" alt="{{ .Title }}" width="80" height="80"
+               style="border-radius:50%;object-fit:cover;">
+        {{ end }}
+        <div>
+          <h2 class="post-title" style="margin:0;">{{ .Title }}</h2>
+          {{ with .Params.bio }}
+            <p class="post-description" style="margin:.25rem 0 0 0;">{{ . }}</p>
+          {{ end }}
+
+          {{- if gt (len $icons) 0 -}}
+            <div class="social-icons" style="display:flex;gap:.5rem;margin-top:.5rem;align-items:center;">
+              {{- range $icons }}
+                <a href="{{ trim .url " " | safeURL }}" target="_blank" rel="noopener noreferrer me"
+                   title="{{ (.title | default .name) | title }}">
+                  {{ partial "svg.html" . }}
+                </a>
+              {{- end }}
+            </div>
+          {{- end -}}
+        </div>
+      </div>
+    </header>
+
+    <!-- Optional extra content from the term page body -->
+    {{ with .Content }}
+      <div class="post-content" style="margin-top:1rem;">
+        {{ . }}
+      </div>
+    {{ end }}
+
+    <!-- Posts by this author -->
+    <h2 style="margin-top:2rem;">Posts</h2>
+    <br/>
+    <div class="post-entry-list">
+      {{ range .Pages.ByDate.Reverse }}
+        <article class="post-entry">
+          <header class="entry-header">
+            <h2><a href="{{ .RelPermalink }}">{{ .Title }}</a></h2>
+          </header>
+          {{ with .Summary }}
+            <div class="entry-content">{{ . }}</div>
+          {{ end }}
+          <footer class="entry-footer">
+            <span>{{ .Date.Format "January 2, 2006" }}</span>
+          </footer>
+        </article>
+      {{ end }}
+    </div>
+
+  </article>
+</main>
+{{ end }}
