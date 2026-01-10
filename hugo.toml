@@ -1,0 +1,83 @@
+baseURL = "https://blog.xbid.ai/"
+languageCode = "en"
+title = "xbid.ai — blog"
+theme = ["PaperMod"]
+enableRobotsTXT = true
+
+[taxonomies]
+  author = "authors"
+  tag = "tags"
+
+[minify]
+  disableXML = true
+  minifyOutput = true
+
+[outputs]
+  home = ["HTML", "RSS", "JSON"]
+
+[params]
+  env = "production"
+  defaultTheme = "dark"
+  ShowReadingTime = false
+  ShowPostNavLinks = true
+  ShowBreadCrumbs = true
+  ShowCodeCopyButtons = true
+  ShowRssButtonInSectionTermList = true
+  ShowAuthor = true
+  images = ["https://xbid.ai/banner.png"]
+
+[params.footer]
+  startYear = 2025
+  tagline = "Intelligence. Staked. Onchain."
+  hideCopyright = true
+  text = "© 2026 xbid.ai — All rights reserved [RSS](/index.xml)"
+  poweredBy = ""
+
+# --- Home Info Mode ---
+[params.homeInfoParams]
+  Title = "xbid.ai — Intelligence. Staked. Onchain."
+  Content = """**xbid.ai** is a multi-LLM AI agent operating live markets with real stake. Every decision has consequences.
+  &nbsp;\n
+  &nbsp;\n
+  This blog is where we share the internals of the project — design notes, experiments, results (good and bad), code, walkthroughs, and what's coming next.
+  &nbsp;\n
+  &nbsp;\n
+  Follow xbid.ai. The edge is yours."""
+
+# --- Social icons ---
+[[params.socialIcons]]
+  name = "github"
+  url  = "https://github.com/xbid-ai"
+
+[[params.socialIcons]]
+  name = "x"
+  url  = "https://x.com/xbid_ai"
+
+[[params.socialIcons]]
+  name = "huggingface"
+  url  = "https://huggingface.co/xbid-labs"
+
+[[params.socialIcons]]
+  name = "youtube"
+  url  = "https://www.youtube.com/@xbidai"
+
+[menu]
+  [[menu.main]]
+    name = "Home"
+    url  = "/"
+    weight = 1
+
+  [[menu.main]]
+    name = "Posts"
+    url  = "/posts/"
+    weight = 2
+
+  [[menu.main]]
+    name = "Tags"
+    url  = "/tags/"
+    weight = 3
+
+  [[menu.main]]
+    name = "xbid.ai"
+    url  = "https://xbid.ai"
+    weight = 4
